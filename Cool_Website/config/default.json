@@ -1,0 +1,14 @@
+{
+  "App" : {
+    "title" : "Круті тренінги",
+    "domain": "cooltraining.com.ua",
+    "color": "#17624D",
+    "image": "https://www.cognex.com/library/media/trainings/online-training.png",
+    "pages": [
+      {"name": "HOME", "href": "/home"},
+      {"name": "TRAININGS", "href": "/trainings"},
+      {"name": "ABOUT", "href": "/about"}
+    ],
+    "emailVerify": true
+  }
+}

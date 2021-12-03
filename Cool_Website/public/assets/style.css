@@ -1,0 +1,226 @@
+body{
+    background-color: white;
+    font-size: 20px;
+}
+
+
+.myBtn {
+    position: fixed;
+    z-index: 99;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    background-color: #80280E;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.myBtn:nth-child(1) {
+    top: 30px;
+    left: 30px;
+}
+
+.myBtn:nth-child(2) {
+    top: 100px;
+    left: 30px;
+}
+
+.myBtn:nth-child(3) {
+    top: 170px;
+    left: 30px;
+}
+
+.myBtn:nth-child(4) {
+    top: 240px;
+    left: 30px;
+}
+
+.myBtn:nth-child(5) {
+    top: 310px;
+    left: 30px;
+}
+
+.myBtn:hover {
+    background-color: #6D230D;
+}
+
+h1{
+    color: #17624D;
+    font-size: 46px;
+}
+
+h2{
+    color: #17624D;
+}
+
+img{
+    width: 95%;
+}
+
+.apply-header{
+    text-align: center;
+    background-color: #17624D;
+    color: #ffffff;
+    padding: 10px 0;
+}
+
+a {
+    color: #ffffff;
+}
+
+a:hover {
+    color: #ffffff;
+}
+
+.navbar-brand{
+    font-size: 28px;
+}
+
+.navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+#showMore{
+    margin-bottom: 50px;
+    color: #1a71ca;
+}
+
+#showMore:hover{
+    margin-bottom: 50px;
+    color: #0a194f;
+    cursor: pointer;
+}
+
+@media (max-width: 853px) {
+    .en{
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 1349px) {
+    .en{
+        padding-left: 10%;
+    }
+}
+
+@media (min-width: 1350px) {
+    .en{
+        padding-left: 40%;
+    }
+}
+
+.hov{
+    color: #c4bdbd;
+    font-size: 22px;
+}
+
+.grey{
+    background-color: #bebebe;
+    border-radius: 5px;
+}
+
+.form-application{
+    padding: 30px 20px;
+}
+
+.form-training{
+    padding: 30px 20px;
+}
+
+#application{
+    border: 5px solid #17624D;
+}
+
+.description{
+    display: none;
+}
+
+.my-form-control{
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.my-form-control label{
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 5px;
+    font-size: 22px;
+}
+
+.my-form-control input{
+    display: block;
+    border: 2px solid #f0f0f0;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+}
+
+.my-form-control textarea{
+    display: block;
+    border: 2px solid #f0f0f0;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+}
+
+.my-form-control.success input{
+    border-color: #2d9b05;
+}
+
+.my-form-control.error input{
+    border-color: #8d1014;
+}
+
+.my-form-control.success textarea{
+    border-color: #2d9b05;
+}
+
+.my-form-control.error textarea{
+    border-color: #8d1014;
+}
+
+.my-form-control i{
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    visibility: hidden;
+}
+
+.my-form-control.success i.fa-check-circle{
+    visibility: visible;
+    color: #2d9b05;
+}
+
+.my-form-control.error i.fa-exclamation-circle{
+    visibility: visible;
+    color: #8d1014;
+}
+
+.my-form-control small{
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    visibility: hidden;
+}
+
+.my-form-control.error small{
+    visibility: visible;
+    color: #8d1014;
+}
+
+.my-button button{
+    font-size: 24px;
+    background-color: #17624D;
+}
+
+.layout-sidebar{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding: 20px;
+}

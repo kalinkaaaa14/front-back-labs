@@ -1,0 +1,102 @@
+<body>
+
+    <div id="add-training" class="container shadow-lg pt-5 mt-5 mb-5 bg-white rounded" >
+        <div class="row">
+            <div class="col-sm-7">
+                <img src="/assets/images/admin.png" alt="admin img"/>
+            </div>
+            <div class="col-sm-5">
+                <%- include('partials/training-form.ejs') %>
+            </div>
+        </div>
+    </div>
+
+    <div id="applications" class="container shadow-lg p-3 mb-5 bg-white rounded">
+        <h1>Applications</h1>
+        <div class="form-check">
+            <% if(emailVerify===true){%>
+            <input id="verify" class="form-check-input" onclick="changeEmailVerify()" type="checkbox" value="" id="flexCheckChecked" checked>
+                <% }else {%>
+                    <input id="verify" class="form-check-input" onclick="changeEmailVerify()" type="checkbox" value="" id="flexCheckChecked">
+                <%}%>
+            <label class="form-check-label" for="flexCheckChecked">
+                send emails
+            </label>
+        </div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>E-mail</th>
+                <th>Phone</th>
+                <th>Text</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody id="appShow">
+            <% applications.forEach(function (application) {%>
+                <tr>
+                    <td class="align-middle"><%= application.firstName %></td>
+                    <td class="align-middle"><%= application.surname %></td>
+                    <td class=" font-italic align-middle"><%= application.mail %></td>
+                    <td class="align-middle"><%= application.phoneNum %></td>
+                    <td class="align-middle"><%= application.applicText %></td>
+                    <td class="align-middle">
+                        <form action="/admin/delete/<%= application._id %>" method="post" >
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+<script>
+    function fetchdata(){
+        $.ajax({
+            url: '/admin/applications',
+            type: 'get',
+            success: (response) => setApplications(response),
+            complete:function(data){
+                setTimeout(fetchdata,5000);
+            }
+        });
+    }
+
+    function changeEmailVerify(e){
+        let verify = $("#verify")[0].checked
+        let data = {verify};
+        console.log(data)
+        $.ajax({
+            url: '/admin/verify',
+            type: 'post',
+            data: data,
+            success: (response) => {},
+            complete:function(data){
+                setTimeout(fetchdata,5000);
+            }
+        });
+
+    }
+    function setApplications(data) {
+        let $appShow = $("#appShow");
+
+        $appShow.empty();
+        data.forEach((application) => {
+            $appShow.append(
+                "<tr><td class=\"align-middle\">" + application.firstName + "</td><td class=\"align-middle\"> "
+                 + application.surname + "</td><td class=\"align-middle table-info font-italic\"> " + application.mail
+                + "</td><td class=\"align-middle\">" + application.phoneNum + "</td><td class=\"align-middle\">" + application.applicText +
+                "</td><td class=\"align-middle\"><form action=\"/admin/delete/" + application._id + "\" method=\"post\"><button type=\"submit\" class=\"btn btn-danger\">Delete</button></form></td></tr>"
+            );
+        });
+    }
+
+    $(document).ready(function(){
+        setTimeout(fetchdata,5000);
+    });
+
+</script>
+</body>

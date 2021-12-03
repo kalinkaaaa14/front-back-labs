@@ -1,0 +1,65 @@
+<div class="d-flex align-items-center" id="root">
+    <div class="container">
+        <div id="trainingsShow" class=" container overflow-auto"></div>
+    </div>
+</div>
+
+<script type="text/babel">
+
+    function toggleMore(id) {
+        let x = document.getElementById(id);
+        $(x).toggle();
+    }
+
+    class ShowTrainings extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                trainings: []
+            };
+        }
+
+        getNewTrainings() {
+            fetch("/admin/trainings")
+                .then((resp) => resp.json())
+                .then((resp) => {
+                    console.log(resp);
+                    this.setState((state) => ({ trainings: resp }));
+                });
+        }
+
+        componentDidMount() {
+            this.getNewTrainings();
+            this.interval = setInterval(() => this.getNewTrainings(), 3000);
+        }
+
+        componentWillUnmount() {
+            clearInterval(this.interval);
+        }
+
+        render() {
+            if (this.state.trainings) {
+                return (
+                    <div className="card-body table-responsive ">
+                        {this.state.trainings.map((training) => (
+                            <div className="border border-success mb-4 pt-4 pl-4 pb-4" >
+                                <h2 className="">{training.nameT}</h2>
+                                <p className="">{training.descrShort}</p>
+                                <p className="description" id={training._id}>{training.descrLong}</p>
+                                <p id="showMore" onClick={() => toggleMore(training._id)}>
+                                    More
+                                </p>
+                            </div>)
+                        )}
+                    </div>
+                );
+            }
+        }
+    }
+    ReactDOM.render(<ShowTrainings></ShowTrainings>, document.getElementById("trainingsShow"));
+
+</script>
+<script>
+    $(".hov[href='/trainings']").css('color', '#ffffff');
+</script>
+<!--<script src="/js/trainings.js"></script>-->
