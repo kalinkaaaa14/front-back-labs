@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<div class="bg-dark">
+<div class="container pt-5 bg-white">
+    <div class="row">
+        <div class="col-sm-12 sidenav">
+            <h2 class="mb-4 text-centertext-dark"><b>Spammer</b></h2>
+
+            <div class="row bg-warning pb-4">
+                    <div class="form-group col-sm-6">
+                        <label class="mb-2" for="sel1" style="font-size: 18px;"><b>Filter by:</b></label>
+
+                            <select id="filterByEmail" class="form-control" id="sel1">
+                                <option value="emailAsc">Email asc</option>
+                                <option value="emailDesc">Email desc</option>
+                            </select>
+                    </div>
+                <div class="col-sm-3"></div>
+                <div id="writeNew"  class="col-sm-3 pt-4" >
+                    <button type="button" onclick='showForm()' class="btn btn-dark mb-4 btn-lg">
+                        Write new address
+                    </button>
+                </div>
+            </div>
+
+            <div id="formNewAddress" class="mt-5">
+                <form id="createAddress" method="post">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Surname</span>
+                        </div>
+                        <input name="surname" type="text" id="postSurname" class="form-control"
+                               required
+                               placeholder="Kupchyk"
+                               aria-label="Surname">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" >Name</span>
+                        </div>
+                        <input name="name" id="postName" required type="text" class="form-control"
+                               placeholder="Alina"
+                               aria-label="Name">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" >Middlename</span>
+                        </div>
+                        <input name="middlename" type="text" id="postMiddlename" class="form-control"
+                               placeholder="Vitaliivna"
+                               required
+                               aria-label="Middlename">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" >Email</span>
+                        </div>
+                        <input name="email" type="email" id="postEmail" class="form-control"
+                               placeholder="kalinkaaaa14@gmail.com"
+                               required
+                               aria-label="Email">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="hideForm()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary ">Add
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
+            <table class="table table-striped table-hover mt-5">
+                <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Middlename</th>
+                    <th>Email</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="allReceivers">
+                <% receivers.forEach(function (receiver) {%>
+                <tr>
+                    <td><%=receiver.name%></td>
+                    <td><%=receiver.surname%></td>
+                    <td><%=receiver.middlename%></td>
+                    <td><%=receiver.email%></td>
+                    <td>
+                        <button class="btn btn-dark" onclick="editAddressModal('<%=receiver._id%>', '<%=receiver.name%>', '<%=receiver.surname%>', '<%=receiver.middlename%>', '<%=receiver.email%>')">
+                            Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-dark" onclick="deleteAddress('<%=receiver._id%>')">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                <%})%>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="mt-5 pb-5 mt-2">
+            <b>SELECT A MESSAGE FROM TEMPLATE OR WRITE YOUR OWN</b>
+            <div class="row bg-warning pb-4">
+
+                <div class="form-group col-sm-6 ml-4">
+                    <label class="mb-2 mt-1" for="sel2" >Choose template:</label>
+                    <select id="templateMessages" name="messageTemplate" class="form-control" id="sel2">
+                        <option value=""></option>
+                        <% messages.forEach(function (message){%>
+                        <option value="<%=message.text%>"><%=message.title%></option>
+                        <%})%>
+                    </select>
+                </div>
+            </div>
+
+            <div class="md-form amber-textarea active-amber-textarea mt-3">
+                <textarea name="textAreaField" id="textAreaField" class="md-textarea form-control" rows="3"></textarea>
+            </div>
+
+            <button id="sendSpam" class="btn btn-dark mt-3 btn-lg" onclick="sendEmails()">SEND</button>
+        </div>
+    </div>
+    <!-- Modal edit-->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAddress" method="post">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Surname</span>
+                            </div>
+                            <input name="surname" id="editSurname" type="text" class="form-control"
+                                   aria-label="Surname" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Name</span>
+                            </div>
+                            <input name="name" id="editName" type="text" class="form-control"
+                                   aria-label="Name"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Middlename</span>
+                            </div>
+                            <input name="middlename" id="editMiddlename" type="text" class="form-control"
+                                   aria-label="Middlename" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Email</span>
+                            </div>
+                            <input name="email" id="editEmail" type="text" class="form-control"
+                                   aria-label="Email" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group mb-3"  hidden>
+                            <input id="idForEdit" name="idForEdit" type="text" class="form-control"
+                                   placeholder="0"
+                                   aria-label="Id" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary ">Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+<script>
+
+    $('#templateMessages').on('change', function() {
+        let selected = this.value;
+        $('#textAreaField').val(selected);
+    });
+
+    $('#filterByEmail').on('change', function() {
+        let selected = this.value;
+        localStorage.setItem("order", selected);
+        loadAddresses();
+    });
+    document.getElementById('formNewAddress').style.display = 'none';
+
+    function showForm() {
+        document.getElementById('writeNew').style.display = 'none';
+        document.getElementById('formNewAddress').style.display = 'block';
+    }
+    function hideForm() {
+        document.getElementById('writeNew').style.display = 'block';
+        document.getElementById('formNewAddress').style.display = 'none';
+    }
+    function editAddressModal(id, name, surname, middlename, email){
+        $('#editModal').modal('toggle');
+        $('#editName').val(name);
+        $('#editSurname').val(surname);
+        $('#editMiddlename').val(middlename);
+        $('#editEmail').val(email);
+        $('#idForEdit').val(id);
+    }
+    $('#createAddress').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/receivers',
+            dataType: 'json',
+            data: JSON.stringify({
+                surname: $(this).find('[name=surname]').val(),
+                name: $(this).find('[name=name]').val(),
+                middlename: $(this).find('[name=middlename]').val(),
+                email: $(this).find('[name=email]').val()
+            }),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Content-Type', 'application/json');
+            },
+            success: function () {
+                loadAddresses();
+                document.getElementById('postName').value = '';
+                document.getElementById('postSurname').value = '';
+                document.getElementById('postMiddlename').value = '';
+                document.getElementById('postEmail').value = '';
+            },
+            error: function (xhr) {
+                console.log(xhr.responseJSON);
+            }
+        });
+    });
+
+    function loadAddresses() {
+        let order = localStorage.getItem('order');
+        console.log(order);
+        let sorting = order === "emailAsc" ? 1 : -1;
+        console.log(sorting)
+        $.ajax({
+            url: '/receivers',
+            data: {
+              "order":sorting
+            },
+            success: (response) => (setAddresses(response))
+        })
+    }
+
+    function setAddresses(data) {
+        $('#allReceivers').empty();
+
+        data.forEach(address => {
+            $('#allReceivers').append(
+                '<tr><td>' + address.surname + '</td><td> ' + address.name + '</td><td>'+address.middlename+'</td><td>'
+                + address.email + '</td><td>' +
+                '<td><button type="button" class="btn btn-dark" onclick="editAddressModal(\'' + address._id + '\', \'' + address.name + '\', \'' + address.surname + '\', \'' + address.middlename + '\', \'' + address.email + '\')">Edit</button></td> ' +
+                '<td><button type="button" class="btn btn-dark" onclick="deleteAddress(\''+address._id+'\')">Delete</button></td> ' +
+                '</tr>')
+        })
+    }
+
+    function deleteAddress(receiverId){
+        console.log(receiverId);
+        $.ajax({
+            type: 'DELETE',
+            url: `/receivers/${receiverId}`,
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                loadAddresses();
+            },
+            error: function (xhr){
+                console.log(xhr.responseJSON);
+            }
+        });
+    }
+
+    $('#editAddress').submit(function (e) {
+        e.preventDefault();
+        let editId = $('#idForEdit').val();
+        console.log(editId)
+        $.ajax({
+            type: 'PATCH',
+            url: '/receivers/' + editId,
+            dataType: 'json',
+            data: JSON.stringify({
+                surname: $(this).find('[name=surname]').val(),
+                name: $(this).find('[name=name]').val(),
+                middlename: $(this).find('[name=middlename]').val(),
+                email: $(this).find('[name=email]').val()
+            }),
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('Content-Type', 'application/json');
+            },
+            success: function () {
+                $('#editModal').modal('toggle');
+                $('#editAddress').trigger('reset')
+                loadAddresses();
+            },
+            error: function (xhr) {
+                console.log(xhr.responseJSON);
+            }
+        });
+    });
+    function sendEmails() {
+        $("#sendSpam").attr("disabled", true);
+        $.ajax({
+            url: '/receivers',
+            success: (receivers) => {
+                $.ajax({
+                    type: 'POST',
+                    url: '/send',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        text: $('#textAreaField').val(),
+                        receivers: receivers
+                    }),
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                    },
+                    success: function () {
+                        $('#sendSpam').attr("disabled", false);
+                        alert('Mail sent successfully!')
+                    },
+                    error: function (xhr) {
+                        console.log(xhr.responseJSON);
+                        $('#sendSpam').attr("disabled", false);
+                        alert("Something went wrong.. Try again!")
+                    }
+                })
+            }
+        })
+
+    }
+</script>
+
+</body>
+</html>
